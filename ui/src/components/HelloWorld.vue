@@ -97,7 +97,9 @@ export default {
     },
     async deleteProduct(id) {
       try {
+        console.log('Deleting product with id:', id); // Check if delete operation is triggered
         await this.$store.dispatch('deleteProduct', id);
+        console.log('Product deleted successfully'); // Check if delete operation is successful
         Swal.fire({
           title: 'Success!',
           text: 'Product successfully deleted',
@@ -105,7 +107,7 @@ export default {
           confirmButtonText: 'OK'
         });
       } catch (error) {
-        console.error('Error: deleting product:', error);
+        console.error('Error deleting product:', error);
       }
     },
     addProduct(newProduct) {
