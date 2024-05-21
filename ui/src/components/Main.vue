@@ -4,7 +4,8 @@
       <b-row class="mb-3">
         <b-col>
           <h1>Product List</h1>
-          <b-button size="md" variant="success" class="float-end" @click="showModal">Add New Product</b-button>
+          <b-button size="md" variant="success" class="float-start" @click="showModal">Add New Product</b-button>
+          <b-button size="md" variant="danger" class="float-end">Logout</b-button>
         </b-col>
       </b-row>
       <b-row>
@@ -42,7 +43,7 @@ import Swal from 'sweetalert2';
 
 export default {
   name: 'App',
-  components: { AddModal, EditModal },
+  components: {AddModal, EditModal },
   data() {
     return {
       fields: [

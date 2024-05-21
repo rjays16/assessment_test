@@ -19,6 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+use App\Http\Controllers\AuthController;
+
+// Authentication Routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
 Route::prefix('products')->group(function () {
     Route::post('', [ProductController::class,'storeProduct']);
     Route::get('', [ProductController::class,'getAllProducts']);

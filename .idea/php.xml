@@ -69,11 +69,8 @@
       <path value="$PROJECT_DIR$/api/vendor/league/mime-type-detection" />
       <path value="$PROJECT_DIR$/api/vendor/league/flysystem" />
       <path value="$PROJECT_DIR$/api/vendor/league/flysystem-local" />
-      <path value="$PROJECT_DIR$/api/vendor/laravel/prompts" />
       <path value="$PROJECT_DIR$/api/vendor/phpunit/php-code-coverage" />
-      <path value="$PROJECT_DIR$/api/vendor/laravel/sail" />
       <path value="$PROJECT_DIR$/api/vendor/phpunit/php-file-iterator" />
-      <path value="$PROJECT_DIR$/api/vendor/laravel/framework" />
       <path value="$PROJECT_DIR$/api/vendor/phpunit/php-invoker" />
       <path value="$PROJECT_DIR$/api/vendor/laravel/sanctum" />
       <path value="$PROJECT_DIR$/api/vendor/phpunit/php-text-template" />
@@ -81,7 +78,6 @@
       <path value="$PROJECT_DIR$/api/vendor/phpunit/phpunit" />
       <path value="$PROJECT_DIR$/api/vendor/laravel/serializable-closure" />
       <path value="$PROJECT_DIR$/api/vendor/phpunit/php-timer" />
-      <path value="$PROJECT_DIR$/api/vendor/laravel/pint" />
       <path value="$PROJECT_DIR$/api/vendor/composer" />
       <path value="$PROJECT_DIR$/api/vendor/nunomaduro/termwind" />
       <path value="$PROJECT_DIR$/api/vendor/nunomaduro/collision" />
@@ -129,6 +125,24 @@
       <path value="$PROJECT_DIR$/api/vendor/voku/portable-ascii" />
       <path value="$PROJECT_DIR$/api/vendor/ralouphie/getallheaders" />
       <path value="$PROJECT_DIR$/api/vendor/sebastian/type" />
+      <path value="$PROJECT_DIR$/api/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/api/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/api/vendor/symfony/psr-http-message-bridge" />
+      <path value="$PROJECT_DIR$/api/vendor/defuse/php-encryption" />
+      <path value="$PROJECT_DIR$/api/vendor/phpseclib/phpseclib" />
+      <path value="$PROJECT_DIR$/api/vendor/laravel/passport" />
+      <path value="$PROJECT_DIR$/api/vendor/nyholm/psr7" />
+      <path value="$PROJECT_DIR$/api/vendor/league/oauth2-server" />
+      <path value="$PROJECT_DIR$/api/vendor/league/uri-interfaces" />
+      <path value="$PROJECT_DIR$/api/vendor/league/uri" />
+      <path value="$PROJECT_DIR$/api/vendor/league/event" />
+      <path value="$PROJECT_DIR$/api/vendor/paragonie/constant_time_encoding" />
+      <path value="$PROJECT_DIR$/api/vendor/paragonie/random_compat" />
+      <path value="$PROJECT_DIR$/api/vendor/firebase/php-jwt" />
+      <path value="$PROJECT_DIR$/api/vendor/laravel/framework" />
+      <path value="$PROJECT_DIR$/api/vendor/laravel/pint" />
+      <path value="$PROJECT_DIR$/api/vendor/laravel/sail" />
+      <path value="$PROJECT_DIR$/api/vendor/laravel/prompts" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
