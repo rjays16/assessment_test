@@ -69,7 +69,8 @@ export default {
           Swal.fire({
             icon: 'success',
             title: 'Success',
-            text: response.message
+            text: response.message,
+            confirmButtonText: 'OK'
           });
           this.resetForm();
         })

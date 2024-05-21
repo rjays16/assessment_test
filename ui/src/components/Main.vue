@@ -73,7 +73,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getProducts']),
+    ...mapActions(['getProducts', 'updateProduct']),
     showModal() {
       this.$refs.addModal.showModal();
     },
@@ -84,22 +84,40 @@ export default {
     closeEditModal() {
       this.showEditModal = false;
     },
-    updateEditedItem(updatedItem) {
-      const index = this.products.findIndex(p => p.id === updatedItem.id);
-      if (index !== -1) {
-        this.$store.commit('SET_PRODUCTS', [
-          ...this.products.slice(0, index),
-          updatedItem,
-          ...this.products.slice(index + 1)
-        ]);
+    // updateEditedItem(updatedItem) {
+    //   const index = this.products.findIndex(p => p.id === updatedItem.id);
+    //   if (index !== -1) {
+    //     this.$store.commit('SET_PRODUCTS', [
+    //       ...this.products.slice(0, index),
+    //       updatedItem,
+    //       ...this.products.slice(index + 1)
+    //     ]);
+    //   }
+    //   this.showEditModal = false;
+    // },
+
+    async updateEditedItem(updatedItem) {
+      try {
+        const response = await this.updateProduct(updatedItem);
+        const index = this.products.findIndex(p => p.id === response.id);
+        if (index !== -1) {
+          this.$store.commit('UPDATE_PRODUCT', response);
+        }
+        this.showEditModal = false;
+      } catch (error) {
+        console.error('Error updating product:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to update product',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
-      this.showEditModal = false;
     },
     async deleteProduct(id) {
       try {
-        console.log('Deleting product with id:', id); // Check if delete operation is triggered
+        console.log('Deleting product with id:', id);
         await this.$store.dispatch('deleteProduct', id);
-        console.log('Product deleted successfully'); // Check if delete operation is successful
         Swal.fire({
           title: 'Success!',
           text: 'Product successfully deleted',

@@ -13,7 +13,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'due_date' => 'nullable|date',
+            'due_date' => 'required|date',
             'status' => 'required|boolean',
         ]);
 
@@ -26,6 +26,20 @@ class ProductController extends Controller
         $products = Product::all();
         return response()->json($products, 200);
     }
+
+    public function updateProduct(Request $request, Product $product)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'due_date' => 'required|date',
+            'status' => 'required|boolean',
+        ]);
+
+        $product->update($validatedData);
+        return response()->json($product, 200);
+    }
+
 
     public function deleteProduct(Product $product)
     {
