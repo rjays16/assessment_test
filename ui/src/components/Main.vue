@@ -85,17 +85,6 @@ export default {
     closeEditModal() {
       this.showEditModal = false;
     },
-    // updateEditedItem(updatedItem) {
-    //   const index = this.products.findIndex(p => p.id === updatedItem.id);
-    //   if (index !== -1) {
-    //     this.$store.commit('SET_PRODUCTS', [
-    //       ...this.products.slice(0, index),
-    //       updatedItem,
-    //       ...this.products.slice(index + 1)
-    //     ]);
-    //   }
-    //   this.showEditModal = false;
-    // },
 
     async updateEditedItem(updatedItem) {
       try {
@@ -137,15 +126,15 @@ export default {
     },
     async logout() {
       try {
-        await this.$store.dispatch('logout'); // Call the logout action from Vuex store
-        AuthService.removeToken(); // Clear the authentication token from local storage
+        await this.$store.dispatch('logout');
+        AuthService.removeToken();
         Swal.fire({
           title: 'Logged Out',
           text: 'You have been successfully logged out.',
           icon: 'success',
           confirmButtonText: 'OK'
         }).then(() => {
-          this.$router.push('/login'); // Redirect to the login page after confirming
+          this.$router.push('/login');
         });
       } catch (error) {
         console.error('Error logging out:', error);

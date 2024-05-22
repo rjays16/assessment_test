@@ -3,13 +3,7 @@
     <h2>Login</h2>
     <b-form @submit.prevent="login">
       <b-form-group label="Email" label-for="email">
-        <b-form-input
-            id="email"
-            v-model="email"
-            type="email"
-            required
-            :state="emailState"
-        >
+        <b-form-input id="email" v-model="email" type="email" required :state="emailState">
           <template #invalid-feedback>
             Please enter a valid email address.
           </template>
@@ -17,13 +11,7 @@
       </b-form-group>
 
       <b-form-group label="Password" label-for="password">
-        <b-form-input
-            id="password"
-            v-model="password"
-            type="password"
-            required
-            :state="passwordState"
-        >
+        <b-form-input id="password" v-model="password" type="password" required :state="passwordState">
           <template #invalid-feedback>
             Password must be at least 8 characters long.
           </template>
@@ -40,6 +28,7 @@
 
 <script>
 import AuthService from "../../../AuthService";
+import Swal from "sweetalert2";
 
 export default {
   name: 'LoginForm',
@@ -73,6 +62,12 @@ export default {
         })
         AuthService.setToken(access_token)
          this.$router.push('/')
+        Swal.fire({
+          title: 'Success!',
+          text: 'Login succesfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
       } catch (error) {
         console.error('Error logging in:', error)
         console.log("incorrect")
@@ -86,19 +81,19 @@ export default {
 
 <style scoped>
 .login-form {
-  max-width: 400px; /* Adjust the max-width as needed */
-  margin: 0 auto; /* Center the form horizontally */
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .form-group {
-  margin-bottom: 20px; /* Adjust the bottom margin between form groups */
+  margin-bottom: 20px;
 }
 
 .form-control {
-  width: 100%; /* Make the input fields fill the entire width of the form */
+  width: 100%;
 }
 
 .submit-button {
-  width: 100%; /* Make the button fill the entire width of the form */
+  width: 100%;
 }
 </style>
