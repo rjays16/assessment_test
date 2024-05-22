@@ -5,7 +5,7 @@
         <b-col>
           <h1>Product List</h1>
           <b-button size="md" variant="success" class="float-start" @click="showModal">Add New Product</b-button>
-          <b-button size="md" variant="danger" class="float-end">Logout</b-button>
+          <b-button size="md" variant="danger" class="float-end" @click="logout">Logout</b-button>
         </b-col>
       </b-row>
       <b-row>
@@ -40,7 +40,7 @@ import AddModal from "@/components/Modal/AddModal.vue";
 import EditModal from "@/components/Modal/EditModal.vue";
 import { mapState, mapActions } from 'vuex';
 import Swal from 'sweetalert2';
-
+import AuthService from "../../AuthService";
 export default {
   name: 'App',
   components: {AddModal, EditModal },
@@ -74,7 +74,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getProducts', 'updateProduct']),
+    ...mapActions(['getProducts', 'updateProduct', 'logout']),
     showModal() {
       this.$refs.addModal.showModal();
     },
@@ -134,7 +134,29 @@ export default {
     },
     mapStatus(status) {
       return status === 1 ? 'active' : 'expired';
-    }
+    },
+    async logout() {
+      try {
+        await this.$store.dispatch('logout'); // Call the logout action from Vuex store
+        AuthService.removeToken(); // Clear the authentication token from local storage
+        Swal.fire({
+          title: 'Logged Out',
+          text: 'You have been successfully logged out.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.$router.push('/login'); // Redirect to the login page after confirming
+        });
+      } catch (error) {
+        console.error('Error logging out:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to logout',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    },
   },
   created() {
     this.getProducts();

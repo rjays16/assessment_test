@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import authGuard from './authGuard'
-
+import authGuard from './authGuard';
+import router from "../../router";
 const router = createRouter({
     history: createWebHistory(),
-    routes,
+    router,
 })
 
 router.beforeEach((to, from, next) => {
