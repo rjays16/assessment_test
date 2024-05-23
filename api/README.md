@@ -64,3 +64,15 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## For Installation laravel with passport run following command:
+
+- composer require laravel/passport
+- php artisan migrate or php artisan migrate:fresh
+- php artisan passport:install
+
+## If there's a problem for backend after installing laravel with passport run following command:
+- php artisan cache:clear
+- php artisan route:cache
+- php artisan config:cache
+
