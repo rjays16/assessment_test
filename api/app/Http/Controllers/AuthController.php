@@ -30,20 +30,19 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-
-        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+        $user = User::where('email', $request->email)->first();
+        if(! $user || ! Hash::check($request->password, $user->password))
+        {
+            return response()->json(['email or password is wrong']);
         }
-
-        $user = $request->user();
-        $token = $user->createToken('MyApp')->plainTextToken;
-
-        return response()->json(['token' => $token]);
+        $token = $user->createToken('api_token')->plainTextToken;
+        $response = [
+            'user' => $user,
+            'token', $token
+        ];
+        return response($response, 201);
     }
+
 
     public function logout(Request $request)
     {
