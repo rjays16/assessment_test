@@ -178,7 +178,7 @@ CREATE TABLE `personal_access_tokens` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `personal_access_tokens` */
 
@@ -211,7 +211,10 @@ insert  into `personal_access_tokens`(`id`,`tokenable_type`,`tokenable_id`,`name
 (26,'App\\Models\\User',1,'api_token','4ea9122933cdac137e7bd3b4dec1966c500ebfa8682b45245f6cfe3337afc088','[\"*\"]',NULL,NULL,'2024-05-23 14:49:24','2024-05-23 14:49:24'),
 (27,'App\\Models\\User',2,'api_token','2c4cf9a194fd4a9d0e7416a839117cccd3e76e1843d0c7d34ae5dd7347072f5f','[\"*\"]',NULL,NULL,'2024-05-23 14:52:47','2024-05-23 14:52:47'),
 (28,'App\\Models\\User',1,'api_token','4c36f718e2bc1d494e0e720d3715f0d09d07a5a6f6f532abb9c9f04c35ac180a','[\"*\"]',NULL,NULL,'2024-05-23 14:57:54','2024-05-23 14:57:54'),
-(29,'App\\Models\\User',2,'api_token','92807838987fd6918b5827174640682412b7e8453a2aaad2801a88d6c60edaa8','[\"*\"]',NULL,NULL,'2024-05-23 15:00:32','2024-05-23 15:00:32');
+(29,'App\\Models\\User',2,'api_token','92807838987fd6918b5827174640682412b7e8453a2aaad2801a88d6c60edaa8','[\"*\"]',NULL,NULL,'2024-05-23 15:00:32','2024-05-23 15:00:32'),
+(30,'App\\Models\\User',3,'MyApp','721a9adcdab1b0d27b85ce1c79f6d329123f35f49f89365949dbfc66f0078685','[\"*\"]',NULL,NULL,'2024-05-23 21:48:44','2024-05-23 21:48:44'),
+(31,'App\\Models\\User',4,'MyApp','2465106f88d083a83992815ca586e3f104f4846124ee52688280c87924766688','[\"*\"]',NULL,NULL,'2024-05-23 21:50:13','2024-05-23 21:50:13'),
+(32,'App\\Models\\User',4,'api_token','f2bd0de19b05c66bb0925d96b32a40127f5164439bf9c90e9f977b859ad11f42','[\"*\"]',NULL,NULL,'2024-05-23 21:50:20','2024-05-23 21:50:20');
 
 /*Table structure for table `products` */
 
@@ -250,13 +253,14 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `users` */
 
 insert  into `users`(`id`,`name`,`email`,`email_verified_at`,`password`,`roles`,`remember_token`,`created_at`,`updated_at`) values 
 (1,'Admin User','admin@example.com',NULL,'$2y$12$yFeG.MJjUgQdwgay2EOlwOgeXUQzkgi7brzl.UOQG/ltKdZnvti5i','admin','WG4igLZkV4',NULL,NULL),
-(2,'Regular User','user@example.com',NULL,'$2y$12$2xQwT8jIdFW0O5F5/wVx8eSyVHn.xU8HdJ4Q0Uis77sYdB7lH2/am','user','ewaUvko9P8',NULL,NULL);
+(2,'Regular User','user@example.com',NULL,'$2y$12$2xQwT8jIdFW0O5F5/wVx8eSyVHn.xU8HdJ4Q0Uis77sYdB7lH2/am','user','ewaUvko9P8',NULL,NULL),
+(4,'Allan III Condiman','rjaycondiman81@gmail.com',NULL,'$2y$12$n5yBYOnFUXmsEaSv/ChlUOYMoIRluPqjHIuKfs6SQZXH1JY./0Saa','admin',NULL,'2024-05-23 21:50:13','2024-05-23 21:50:13');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

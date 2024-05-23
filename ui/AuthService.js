@@ -1,6 +1,15 @@
 import axios from './axiosConfig';
 
 class AuthService {
+    async register(user) {
+        try {
+            const response = await axios.post(`/api/register`, user);
+            return response.data;
+        } catch (error) {
+            console.error('Error registering:', error);
+            throw error;
+        }
+    }
     async login(credentials) {
         try {
             const response = await axios.post(`/api/login`, credentials);

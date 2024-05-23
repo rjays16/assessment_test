@@ -41,6 +41,10 @@
           Login
         </b-button>
       </b-form>
+
+      <div class="register-link">
+        <router-link to="/register">Don't have an account? Register here</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -120,7 +124,7 @@ export default {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   background: #fff;
   border-radius: 8px;
-  margin-bottom: 300px; /* Adjust this value to increase or decrease the bottom spacing */
+  margin-bottom: 300px;
 }
 
 .form-group {
@@ -146,5 +150,19 @@ export default {
 
 .submit-button:hover {
   background-color: #0056b3;
+}
+
+.register-link {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.register-link a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
 }
 </style>
