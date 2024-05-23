@@ -70,7 +70,7 @@ export default {
             icon: 'success',
             title: 'Success',
             text: response.message,
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
           });
           this.resetForm();
         })
@@ -91,6 +91,9 @@ export default {
         status: ''
       };
       this.isModalVisible = false;
+      setTimeout(() => {
+        window.location.reload();
+      }, 4000);
     }
   }
 };
