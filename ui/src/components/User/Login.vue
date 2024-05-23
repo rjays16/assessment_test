@@ -4,7 +4,13 @@
       <h2>Login</h2>
       <b-form @submit.prevent="login">
         <b-form-group label="Email" label-for="email">
-          <b-form-input id="email" v-model="email" type="email" required :state="emailState">
+          <b-form-input
+              id="email"
+              v-model="email"
+              type="email"
+              required
+              :state="emailState"
+          >
             <template #invalid-feedback>
               Please enter a valid email address.
             </template>
@@ -12,14 +18,25 @@
         </b-form-group>
 
         <b-form-group label="Password" label-for="password">
-          <b-form-input id="password" v-model="password" type="password" required :state="passwordState">
+          <b-form-input
+              id="password"
+              v-model="password"
+              type="password"
+              required
+              :state="passwordState"
+          >
             <template #invalid-feedback>
               Password must be at least 8 characters long.
             </template>
           </b-form-input>
         </b-form-group>
 
-        <b-button type="submit" variant="primary" :disabled="isLoading">
+        <b-button
+            type="submit"
+            variant="primary"
+            :disabled="isLoading"
+            class="submit-button"
+        >
           <b-spinner v-if="isLoading" small></b-spinner>
           Login
         </b-button>
@@ -58,12 +75,13 @@ export default {
       this.isLoading = true
 
       try {
-        const { access_token } = await AuthService.login({
+        const { access_token, user } = await AuthService.login({
           email: this.email,
           password: this.password,
-        })
-        AuthService.setToken(access_token)
-        this.$router.push('/')
+        });
+        AuthService.setToken(access_token);
+        AuthService.setUser(user);
+        this.$router.push('/');
         Swal.fire({
           title: 'Success!',
           text: 'Login successfully',
@@ -71,8 +89,12 @@ export default {
           confirmButtonText: 'OK'
         });
       } catch (error) {
-        console.error('Error logging in:', error)
-        console.log("incorrect")
+        Swal.fire({
+          title: 'Error!',
+          text: error.response?.data?.message || 'Failed to login',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       } finally {
         this.isLoading = false
       }

@@ -41,7 +41,13 @@ class AuthService {
     }
 
     getUser() {
-        return JSON.parse(localStorage.getItem('user'));
+        const user = localStorage.getItem('user');
+        try {
+            return user ? JSON.parse(user) : null;
+        } catch (error) {
+            console.error('Error parsing user JSON:', error);
+            return null;
+        }
     }
 
     removeUser() {
