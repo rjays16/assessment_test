@@ -4,50 +4,37 @@ namespace App\Services;
 
 use App\Models\Video;
 use Illuminate\Http\Request;
-use Kunnu\Dropbox\Dropbox;
-use Kunnu\Dropbox\DropboxApp;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Pion\Laravel\ChunkUpload\Handler\UploadHandler;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 
 class VideoService
 {
-    protected $dropbox;
-
-    public function __construct()
+    public function handleChunkUpload(Request $request)
     {
-        $app = new DropboxApp(env('DROPBOX_APP_KEY'), env('DROPBOX_APP_SECRET'), env('DROPBOX_ACCESS_TOKEN'));
-        $this->dropbox = new Dropbox($app);
-    }
+        $receiver = new FileReceiver("video", $request, UploadHandler::class);
 
-    public function validateRequest(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255',
-            'video' => 'required|file|mimes:mp4,mov,avi|max:10240000', // Adjust max size as needed
-        ]);
-
-        if ($validator->fails()) {
-            return $validator->errors();
+        if ($receiver->isUploaded() === false) {
+            throw new \Exception("File not uploaded");
         }
 
-        return null;
-    }
+        $save = $receiver->receive();
 
-    public function uploadVideoToDropbox($video)
-    {
-        $path = $video->getRealPath();
-        $dropboxFilePath = '/videos/' . time() . '_' . $video->getClientOriginalName();
-        $this->dropbox->upload($dropboxFilePath, file_get_contents($path), ['autorename' => true]);
+        if ($save->isFinished()) {
+            $file = $save->getFile();
+            $filePath = $file->storeAs('videos', $file->getClientOriginalName());
 
-        return $dropboxFilePath;
-    }
+            $video = new Video();
+            $video->title = $request->input('title');
+            $video->path_url = Storage::url($filePath);
+            $video->save();
 
-    public function saveVideoDetails($title, $path_url)
-    {
-        $video = new Video();
-        $video->title = $title;
-        $video->path_url = $path_url;
-        $video->save();
+            return $video;
+        }
 
-        return $video;
+        return response()->json([
+            'done' => $save->handler()->getPercentageDone(),
+            'status' => true
+        ]);
     }
 }

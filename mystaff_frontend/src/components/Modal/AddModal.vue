@@ -1,35 +1,12 @@
 <template>
-  <b-modal id="add-product-modal" v-model="isModalVisible" title="Add New Product" ok-title="Save" ok-class="btn-save" @ok="handleSubmit">
+  <b-modal id="add-video-modal" v-model="isModalVisible" title="Add New Video" @ok="handleSubmit">
     <b-form @submit.stop.prevent="handleSubmit">
-      <b-form-group label="Title" label-for="product-title">
-        <b-form-input
-          id="product-title"
-          v-model="newProduct.title"
-          required
-        ></b-form-input>
+      <b-form-group label="Title" label-for="video-title">
+        <b-form-input id="video-title" v-model="newVideo.title" required></b-form-input>
       </b-form-group>
-      <b-form-group label="Description" label-for="product-description">
-        <b-form-input
-          id="product-description"
-          v-model="newProduct.description"
-          required
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group label="Due Date" label-for="product-due-date">
-        <b-form-input
-          id="product-due-date"
-          v-model="newProduct.due_date"
-          type="date"
-          required
-        ></b-form-input>
-      </b-form-group>
-      <b-form-group label="Status" label-for="product-status">
-        <b-form-select
-          id="product-status"
-          v-model="newProduct.status"
-          :options="statusOptions"
-          required
-        ></b-form-select>
+      <b-form-group label="Video" label-for="video">
+        <input id="video" type="file" @change="handleFileUpload" required>
+        <small class="text-danger" v-if="videoError"><br>{{ videoError }}</small>
       </b-form-group>
     </b-form>
   </b-modal>
@@ -37,64 +14,85 @@
 
 <script>
 import Swal from 'sweetalert2';
-import { mapActions } from 'vuex';
-import { disableButton } from "../Helper/functions.js";
+import axios from 'axios';
 
 export default {
   data() {
     return {
-      newProduct: {
+      newVideo: {
         title: '',
-        description: '',
-        due_date: '',
-        status: ''
+        videoFile: null,
       },
-      statusOptions: [
-        { value: '1', text: 'Active' },
-        { value: '0', text: 'Expired' }
-      ],
       isModalVisible: false,
+      videoError: ''
     };
   },
   methods: {
-    ...mapActions(['createProduct']),
     showModal() {
       this.isModalVisible = true;
     },
-    handleSubmit() {
-      disableButton('.btn-save', true);
+    async handleSubmit() {
+      if (!this.newVideo.videoFile) {
+        this.videoError = 'Please upload a valid video file.';
+        return;
+      }
 
-      this.createProduct(this.newProduct)
-        .then(response => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: response.message,
-            confirmButtonText: 'OK',
-          });
-          this.resetForm();
-        })
-        .catch(error => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: error.response?.data?.message || 'An error occurred'
-          });
-          disableButton('.btn-save', false);
+      try {
+        const formData = new FormData();
+        formData.append('title', this.newVideo.title);
+        formData.append('video', this.newVideo.videoFile);
+
+        const response = await axios.post('/api/videos', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          onUploadProgress: progressEvent => {
+            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            console.log('Upload progress: ', percentCompleted);
+          }
         });
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: response.data.message,
+          confirmButtonText: 'OK',
+        });
+        this.resetForm();
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.response?.data?.message || 'An error occurred'
+        });
+      }
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      const validVideoTypes = ['video/mp4', 'video/avi', 'video/mkv', 'video/mov', 'video/webm'];
+
+      if (file && validVideoTypes.includes(file.type)) {
+        this.newVideo.videoFile = file;
+        this.videoError = '';
+      } else {
+        this.newVideo.videoFile = null;
+        this.videoError = 'Please upload a valid video file.';
+      }
     },
     resetForm() {
-      this.newProduct = {
+      this.newVideo = {
         title: '',
-        description: '',
-        due_date: '',
-        status: ''
+        videoFile: null,
       };
+      this.videoError = '';
       this.isModalVisible = false;
-      setTimeout(() => {
-        window.location.reload();
-      }, 4000);
     }
   }
 };
 </script>
+
+<style scoped>
+.text-danger {
+  color: #dc3545;
+}
+</style>

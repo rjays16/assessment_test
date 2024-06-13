@@ -39,15 +39,6 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-form-group label="Role" label-for="role">
-          <b-form-select
-              id="role"
-              v-model="roles"
-              :options="role_user"
-              required
-          ></b-form-select>
-        </b-form-group>
-
         <b-button
             type="submit"
             variant="primary"
@@ -77,12 +68,6 @@ export default {
       email: "",
       password: "",
       confirmPassword: "",
-      roles: "",
-      role_user: [
-        { value: null, text: 'Please select a role' },
-        { value: 'admin', text: 'Admin' },
-        { value: 'user', text: 'User' }
-      ],
       isLoading: false,
     };
   },
@@ -98,16 +83,6 @@ export default {
         return;
       }
 
-      if (!this.role_user) {
-        Swal.fire({
-          title: "Error!",
-          text: "Please select a role",
-          icon: "error",
-          confirmButtonText: "OK",
-        });
-        return;
-      }
-
       this.isLoading = true;
 
       try {
@@ -115,7 +90,6 @@ export default {
           name: this.name,
           email: this.email,
           password: this.password,
-          roles: this.roles,
         });
         this.$router.push("/login");
         Swal.fire({

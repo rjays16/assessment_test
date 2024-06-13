@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -15,18 +16,11 @@ class VideoController extends Controller
 
     public function upload(Request $request)
     {
-        $errors = $this->videoService->validateRequest($request);
-
-        if ($errors) {
-            return response()->json(['errors' => $errors], 422);
+        try {
+            $video = $this->videoService->handleChunkUpload($request);
+            return response()->json(['message' => 'Video uploaded successfully!', 'video' => $video], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        $video = $request->file('video');
-        $title = $request->input('title');
-
-        $dropboxFilePath = $this->videoService.uploadVideoToDropbox($video);
-        $videoModel = $this->videoService.saveVideoDetails($title, $dropboxFilePath);
-
-        return response()->json(['message' => 'Video uploaded successfully!', 'video' => $videoModel], 200);
     }
 }
