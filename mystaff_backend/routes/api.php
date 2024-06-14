@@ -15,15 +15,13 @@ use App\Http\Controllers\VideoController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
-
-Route::prefix('videos')->group(function () {
-    Route::post('', [VideoController::class, 'upload']);
+Route::middleware('cors')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
+    
+    Route::post('/videos', [VideoController::class, 'upload'])->middleware('auth:api');
 });
-
 
 
 

@@ -4,12 +4,20 @@ namespace App\Services;
 
 use App\Models\Video;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Pion\Laravel\ChunkUpload\Handler\UploadHandler;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Kunnu\Dropbox\DropboxApp;
+use Kunnu\Dropbox\Exceptions\DropboxException;
 
 class VideoService
 {
+    protected $dropboxApp;
+
+    public function __construct(DropboxApp $dropboxApp)
+    {
+        $this->dropboxApp = $dropboxApp;
+    }
+
     public function handleChunkUpload(Request $request)
     {
         $receiver = new FileReceiver("video", $request, UploadHandler::class);
@@ -22,11 +30,11 @@ class VideoService
 
         if ($save->isFinished()) {
             $file = $save->getFile();
-            $filePath = $file->storeAs('videos', $file->getClientOriginalName());
+            $videoPath = $this->uploadToDropbox($file);
 
             $video = new Video();
             $video->title = $request->input('title');
-            $video->path_url = Storage::url($filePath);
+            $video->path_url = $videoPath;
             $video->save();
 
             return $video;
@@ -36,5 +44,18 @@ class VideoService
             'done' => $save->handler()->getPercentageDone(),
             'status' => true
         ]);
+    }
+
+    protected function uploadToDropbox($file)
+    {
+        try {
+            $dropboxPath = '/videos/' . $file->getClientOriginalName();
+            $this->dropboxApp->upload($dropboxPath, $file);
+            $videoUrl = $this->dropboxApp->getTemporaryLink($dropboxPath);
+
+            return $videoUrl;
+        } catch (DropboxException $e) {
+            throw new \Exception('Failed to upload video to Dropbox: ' . $e->getMessage());
+        }
     }
 }

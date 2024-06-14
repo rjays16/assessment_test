@@ -3,7 +3,7 @@ import axios from './axiosConfig';
 class AuthService {
     async register(user) {
         try {
-            const response = await axios.post(`/api/register`, user);
+            const response = await axios.post(`api/register`, user);
             return response.data;
         } catch (error) {
             console.error('Error registering:', error);
@@ -12,7 +12,7 @@ class AuthService {
     }
     async login(credentials) {
         try {
-            const response = await axios.post(`/api/login`, credentials);
+            const response = await axios.post(`api/login`, credentials);
             this.setToken(response.data.token);
             this.setUser(response.data.user);
             return response.data;
@@ -24,7 +24,7 @@ class AuthService {
 
     async logout() {
         try {
-            await axios.post(`/api/logout`);
+            await axios.post(`api/logout`);
             this.removeToken();
             this.removeUser();
         } catch (error) {

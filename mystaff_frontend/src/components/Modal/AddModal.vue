@@ -14,7 +14,7 @@
 
 <script>
 import Swal from 'sweetalert2';
-import axios from 'axios';
+import axiosInstance from '../../../axiosConfig'; // Update the path according to your file structure
 
 export default {
   data() {
@@ -42,7 +42,7 @@ export default {
         formData.append('title', this.newVideo.title);
         formData.append('video', this.newVideo.videoFile);
 
-        const response = await axios.post('/api/videos', formData, {
+        const response = await axiosInstance.post('api/videos', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
