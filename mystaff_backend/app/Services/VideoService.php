@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\Video;
@@ -7,15 +6,16 @@ use Illuminate\Http\Request;
 use Pion\Laravel\ChunkUpload\Handler\UploadHandler;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Kunnu\Dropbox\DropboxApp;
+use Kunnu\Dropbox\Dropbox;
 use Kunnu\Dropbox\Exceptions\DropboxException;
 
 class VideoService
 {
-    protected $dropboxApp;
+    protected $dropbox;
 
-    public function __construct(DropboxApp $dropboxApp)
+    public function __construct(Dropbox $dropbox)
     {
-        $this->dropboxApp = $dropboxApp;
+        $this->dropbox = $dropbox;
     }
 
     public function handleChunkUpload(Request $request)
@@ -50,8 +50,8 @@ class VideoService
     {
         try {
             $dropboxPath = '/videos/' . $file->getClientOriginalName();
-            $this->dropboxApp->upload($dropboxPath, $file);
-            $videoUrl = $this->dropboxApp->getTemporaryLink($dropboxPath);
+            $this->dropbox->upload($file->getPathname(), $dropboxPath, ['autorename' => true]);
+            $videoUrl = $this->dropbox->getTemporaryLink($dropboxPath);
 
             return $videoUrl;
         } catch (DropboxException $e) {

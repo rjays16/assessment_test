@@ -1,72 +1,73 @@
 import axios from './axiosConfig';
 
 class AuthService {
-    async register(user) {
-        try {
-            const response = await axios.post(`api/register`, user);
-            return response.data;
-        } catch (error) {
-            console.error('Error registering:', error);
-            throw error;
-        }
+  async register(user) {
+    try {
+      const response = await axios.post('api/register', user);
+      return response.data;
+    } catch (error) {
+      console.error('Error registering:', error);
+      throw error;
     }
-    async login(credentials) {
-        try {
-            const response = await axios.post(`api/login`, credentials);
-            this.setToken(response.data.token);
-            this.setUser(response.data.user);
-            return response.data;
-        } catch (error) {
-            console.error('Error logging in:', error);
-            throw error;
-        }
-    }
+  }
 
-    async logout() {
-        try {
-            await axios.post(`api/logout`);
-            this.removeToken();
-            this.removeUser();
-        } catch (error) {
-            console.error('Error logging out:', error);
-            throw error;
-        }
+  async login(credentials) {
+    try {
+      const response = await axios.post('api/login', credentials);
+      this.setToken(response.data.token);
+      this.setUser(response.data.user);
+      return response.data;
+    } catch (error) {
+      console.error('Error logging in:', error);
+      throw error;
     }
+  }
 
-    setToken(token) {
-        localStorage.setItem('token', token);
+  async logout() {
+    try {
+      await axios.post('api/logout');
+      this.removeToken();
+      this.removeUser();
+    } catch (error) {
+      console.error('Error logging out:', error);
+      throw error;
     }
+  }
 
-    getToken() {
-        return localStorage.getItem('token');
-    }
+  setToken(token) {
+    localStorage.setItem('token', token);
+  }
 
-    removeToken() {
-        localStorage.removeItem('token');
-    }
+  getToken() {
+    return localStorage.getItem('token');
+  }
 
-    setUser(user) {
-        localStorage.setItem('user', JSON.stringify(user));
-    }
+  removeToken() {
+    localStorage.removeItem('token');
+  }
 
-    getUser() {
-        const user = localStorage.getItem('user');
-        try {
-            return user ? JSON.parse(user) : null;
-        } catch (error) {
-            console.error('Error parsing user JSON:', error);
-            return null;
-        }
-    }
+  setUser(user) {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
 
-    removeUser() {
-        localStorage.removeItem('user');
+  getUser() {
+    const user = localStorage.getItem('user');
+    try {
+      return user ? JSON.parse(user) : null;
+    } catch (error) {
+      console.error('Error parsing user JSON:', error);
+      return null;
     }
+  }
 
-    isAuthenticated() {
-        const token = this.getToken();
-        return !!token;
-    }
+  removeUser() {
+    localStorage.removeItem('user');
+  }
+
+  isAuthenticated() {
+    const token = this.getToken();
+    return !!token;
+  }
 }
 
 export default new AuthService();

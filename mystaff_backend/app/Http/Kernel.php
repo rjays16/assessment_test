@@ -23,6 +23,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\ForceToJson::class,
         \App\Http\Middleware\HandleCors::class,
+        \App\Http\Middleware\CorsMiddleware::class,
     ];
 
     /**
@@ -45,6 +46,12 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+        
+    ];
+    
+    protected $routeMiddleware = [
+        // Other middleware entries...
+        'cors' => \App\Http\Middleware\CorsMiddleware::class,
     ];
 
     /**

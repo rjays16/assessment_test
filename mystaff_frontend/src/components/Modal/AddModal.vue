@@ -14,7 +14,7 @@
 
 <script>
 import Swal from 'sweetalert2';
-import axiosInstance from '../../../axiosConfig'; // Update the path according to your file structure
+import axios from '../../../axiosConfig'; // Update the path according to your file structure
 
 export default {
   data() {
@@ -42,7 +42,13 @@ export default {
         formData.append('title', this.newVideo.title);
         formData.append('video', this.newVideo.videoFile);
 
-        const response = await axiosInstance.post('api/videos', formData, {
+        // Assuming you have stored the token in localStorage after login
+        const token = localStorage.getItem('token');
+        
+        // Set Authorization header globally for Axios
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+        const response = await axios.post('http://assessment.api/api/videos', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
