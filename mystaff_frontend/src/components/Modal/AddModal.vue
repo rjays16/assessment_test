@@ -32,47 +32,45 @@ export default {
       this.isModalVisible = true;
     },
     async handleSubmit() {
-      if (!this.newVideo.videoFile) {
-        this.videoError = 'Please upload a valid video file.';
-        return;
+  if (!this.newVideo.videoFile) {
+    this.videoError = 'Please upload a valid video file.';
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('title', this.newVideo.title);
+  formData.append('video', this.newVideo.videoFile);
+
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+  try {
+    const response = await axios.post('http://assessment.api/api/videos', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      onUploadProgress: progressEvent => {
+        const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        console.log('Upload progress: ', percentCompleted);
       }
+    });
 
-      try {
-        const formData = new FormData();
-        formData.append('title', this.newVideo.title);
-        formData.append('video', this.newVideo.videoFile);
+    Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      text: response.data.message,
+      confirmButtonText: 'OK',
+    });
+    this.resetForm();
+  } catch (error) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: error.response?.data?.message || 'An error occurred'
+    });
+  }
+},
 
-        // Assuming you have stored the token in localStorage after login
-        const token = localStorage.getItem('token');
-        
-        // Set Authorization header globally for Axios
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-        const response = await axios.post('http://assessment.api/api/videos', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          onUploadProgress: progressEvent => {
-            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            console.log('Upload progress: ', percentCompleted);
-          }
-        });
-
-        Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: response.data.message,
-          confirmButtonText: 'OK',
-        });
-        this.resetForm();
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: error.response?.data?.message || 'An error occurred'
-        });
-      }
-    },
     handleFileUpload(event) {
       const file = event.target.files[0];
       const validVideoTypes = ['video/mp4', 'video/avi', 'video/mkv', 'video/mov', 'video/webm'];
