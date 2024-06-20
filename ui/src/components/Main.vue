@@ -4,7 +4,7 @@
       <b-row class="mb-3">
         <b-col>
           <h1>Product List</h1>
-          <b-button size="md" variant="success" class="float-start" @click="showModal" :disabled="!isAdmin">Add New Product</b-button>
+          <b-button size="md" variant="success" class="float-start" @click="showModal">Add New Product</b-button>
           <b-button size="md" variant="danger" class="float-end" @click="logout">Logout</b-button>
         </b-col>
       </b-row>
@@ -12,8 +12,8 @@
         <b-col>
           <b-table striped hover :items="productsWithStatus" :fields="fields" :show-empty="productsWithStatus.length === 0">
             <template #cell(actions)="data">
-              <b-button size="sm" variant="primary" @click="openEditModal(data.item)" class="me-3" :disabled="!isAdmin">Edit</b-button>
-              <b-button size="sm" variant="danger" @click="deleteProduct(data.item.id)" :disabled="!isAdmin">Delete</b-button>
+              <b-button size="sm" variant="primary" @click="openEditModal(data.item)" class="me-3">Edit</b-button>
+              <b-button size="sm" variant="danger" @click="deleteProduct(data.item.id)">Delete</b-button>
             </template>
             <template #empty>
               <div class="text-center">
@@ -73,10 +73,6 @@ export default {
         status: this.mapStatus(product.status)
       }));
     },
-    isAdmin() {
-      const user = AuthService.getUser();
-      return user && user.roles === 'admin';
-    }
   },
   methods: {
     ...mapActions(['getProducts', 'updateProduct', 'logout']),
