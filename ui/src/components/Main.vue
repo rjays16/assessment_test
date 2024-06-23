@@ -41,7 +41,7 @@ export default {
       fields: [
         { key: 'id', label: 'ID' },
         { key: 'name', label: 'Name' },
-        { key: 'size', label: 'Size' },
+        { key: 'size', label: 'Size', formatter: this.formatSize },
         { key: 'actions', label: 'Actions' }
       ],
     };
@@ -99,14 +99,22 @@ export default {
         });
       }
     },
+    formatSize(sizeInBytes) {
+      if (sizeInBytes === 0) return '0 B';
+
+      const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+      const digitGroups = Math.floor(Math.log(sizeInBytes) / Math.log(1024));
+
+      return `${(sizeInBytes / Math.pow(1024, digitGroups)).toFixed(2)} ${units[digitGroups]}`;
+    },
   },
   created() {
     if (AuthService.isAuthenticated()) {
-        this.fetchVideos();
+      this.fetchVideos();
     } else {
-        this.$router.push('/login');
+      this.$router.push('/login');
     }
-}
+  }
 }
 </script>
 
