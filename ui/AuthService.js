@@ -13,8 +13,10 @@ class AuthService {
     async login(credentials) {
         try {
             const response = await axios.post(`/api/login`, credentials);
-            this.setToken(response.data.token);
-            this.setUser(response.data.user);
+            if (response.data.token) {
+                this.setToken(response.data.token);
+                this.setUser(response.data.user);
+            }
             return response.data;
         } catch (error) {
             console.error('Error logging in:', error);

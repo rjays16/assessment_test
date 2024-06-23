@@ -10,7 +10,9 @@
         "laravel/framework": "^10.10",
         "laravel/passport": "^12.2",
         "laravel/sanctum": "^3.3",
-        "laravel/tinker": "^2.8"
+        "laravel/tinker": "^2.8",
+        "spatie/dropbox-api": "^1.22",
+        "spatie/flysystem-dropbox": "^3.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

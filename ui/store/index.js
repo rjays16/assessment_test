@@ -3,52 +3,41 @@ import axios from '../axiosConfig';
 
 const store = createStore({
     state: {
-        products: []
+        videos: []
     },
     mutations: {
-        ADD_PRODUCT(state, product) {
-            state.products.push(product);
+        SET_VIDEOS(state, videos) {
+            state.videos = videos;
         },
-        SET_PRODUCTS(state, products) {
-            state.products = products;
+        ADD_VIDEO(state, video) {
+            state.videos.push(video);
         },
-        DELETE_PRODUCT(state, productId) {
-            const index = state.products.findIndex(product => product.id === productId);
+        DELETE_VIDEO(state, videoId) {
+            const index = state.videos.findIndex(video => video.id === videoId);
             if (index !== -1) {
-                state.products.splice(index, 1);
-            }
-        },
-        UPDATE_PRODUCT(state, updatedProduct) {
-            const index = state.products.findIndex(product => product.id === updatedProduct.id);
-            if (index !== -1) {
-                state.products.splice(index, 1, updatedProduct);
+                state.videos.splice(index, 1);
             }
         }
     },
     actions: {
-        async createProduct({ commit }, product) {
-            const response = await axios.post('/api/products', product);
-            commit('ADD_PRODUCT', response.data);
-            return response.data;
+        async fetchVideos({ commit }) {
+            const response = await axios.get('/api/videos');
+            commit('SET_VIDEOS', response.data);
         },
-        async getProducts({ commit }) {
-            const response = await axios.get('/api/products');
-            commit('SET_PRODUCTS', response.data);
-            return response.data;
+        async uploadVideo({ commit }, formData) {
+            const response = await axios.post('/api/videos', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            commit('ADD_VIDEO', response.data);
         },
-        async deleteProduct({ commit }, productId) {
-            await axios.delete(`/api/products/${productId}`);
-            commit('DELETE_PRODUCT', productId);
-        },
-        async updateProduct({ commit }, product) {
-                const response = await axios.put(`/api/products/${product.id}`, product);
-                commit('UPDATE_PRODUCT', response.data);
-                return response.data;
+        async deleteVideo({ commit }, videoId) {
+            await axios.delete(`/api/videos/${videoId}`);
+            commit('DELETE_VIDEO', videoId);
         }
-    },
-    modules: {
-        // Your modules here
     }
 });
 
 export default store;
+

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VideoController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,9 +20,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('/logout', [AuthController::class, 'logout']);
 
-Route::prefix('products')->group(function () {
-    Route::post('', [ProductController::class,'storeProduct']);
-    Route::get('', [ProductController::class,'getAllProducts']);
-    Route::delete('{product}', [ProductController::class, 'deleteProduct']);
-    Route::put('{product}', [ProductController::class, 'updateProduct']);
-});
+
+    Route::get('/videos', [VideoController::class, 'getAllVideos']);
+    Route::post('/videos', [VideoController::class, 'uploadVideo']);
+    Route::delete('/videos/{id}', [VideoController::class, 'deleteVideo']);
+
